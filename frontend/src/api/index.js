@@ -1,10 +1,14 @@
 import { URL, headers, takeError } from './consts';
 
-export const fetchCategories = () =>
-  fetch(`${URL}/categories`, { headers })
-    .then(data => data.json())
-    .then(data => data.categories)
-    .catch(error => takeError(error));
+export const fetchCategories = async () =>{
+  try {
+    const response = await fetch(`${URL}/categories`, { headers });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    takeError(error)
+  }
+}
 
 export const fetchComments = (id) =>
   fetch(`${URL}/posts/${id}/comments`, { headers })

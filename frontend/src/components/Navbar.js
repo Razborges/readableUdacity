@@ -12,13 +12,13 @@ const Navbar = ({ categories }) => (
       </li>
 
       { categories && 
-        categories.map(category =>
+        categories.map(category => (
           <li key={uuid()}>
-            <Link to={`/${category.name}`}>
+            <Link to={`/${category.path}`}>
               {category.name}
             </Link>
           </li>
-        )
+        ))
       }
 
       <li>

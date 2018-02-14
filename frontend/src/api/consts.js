@@ -7,4 +7,4 @@ export const headers = {
 }
 
 export const takeError = (error) =>
-  console.warning('ERROR: ' , error.statusText);
+  console.warn('ERROR: ' , error.statusText);
