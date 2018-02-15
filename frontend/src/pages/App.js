@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { categoriesRequest } from '../actions/CategoriesActions';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-// import Posts from './Posts';
+import Posts from './Posts';
 // import PostsCategory from './PostsCategory';
 // import PostDetail from './PostDetail';
 // import AddPost from './AddPost';
@@ -21,13 +21,13 @@ class App extends Component {
         <div>
           <Navbar categories={this.props.categories.items} />
           
-          {/* <Switch>
+          <Switch>
             <Route exact path='/' component={ Posts } />
-            <Route exact path='/:category' component={ PostsCategory } />
+            {/* <Route exact path='/:category' component={ PostsCategory } />
             <Route exact path='/:category/:postId' component={ PostDetail } />
             <Route exact path='/add-post' component={ AddPost } />
-            <Route component={ NotFound } />
-          </Switch> */}
+            <Route component={ NotFound } /> */}
+          </Switch>
         </div>
       </BrowserRouter>
     );
