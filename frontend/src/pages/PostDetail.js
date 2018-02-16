@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { commentsPostIdRequest } from '../actions/CommentsActions';
-import { postRequest } from '../actions/PostsActions';
+import { postRequest, deletePostRequest } from '../actions/PostsActions';
 //import PropTypes from 'prop-types';
 import uuid from 'uuid/v1';
 
@@ -20,7 +20,10 @@ class PostDetail extends Component {
 
   _editPost = () => { return }
 
-  _deletePost = () => { return }
+  _deletePost = (id) => {
+    this.props.deletePost(id);
+    this.props.history.push('/');
+  }
 
   _upVotePost = () => { return }
 
@@ -34,7 +37,7 @@ class PostDetail extends Component {
           <Post 
             post={post}
             editAction={this._editPost}
-            deleteAction={this._deletePost}
+            deleteAction={() => this._deletePost(post.id)}
             upVote={this._upVotePost}
             downVote={this._downVotePost}
           />
@@ -65,7 +68,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getCommentsById: (postId) => dispatch(commentsPostIdRequest(postId)),
-    getPostById: (postId) => dispatch(postRequest(postId))
+    getPostById: (postId) => dispatch(postRequest(postId)),
+    deletePost: (postId) => dispatch(deletePostRequest(postId))
   }
 }
 

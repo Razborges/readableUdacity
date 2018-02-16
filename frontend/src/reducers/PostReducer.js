@@ -2,7 +2,10 @@ import { PostsType } from '../actions/PostsActions';
 
 export default function posts (state = {}, action) {
   switch (action.type) {
-    case PostsType.POSTS_SUCCESS:
+    
+    case PostsType.POSTS_SUCCESS ||
+         PostsType.DELETE_POST_SUCCESS ||
+         PostsType.NEW_POST_SUCCESS:
       return { ...state, allposts: action.posts }
     
     case PostsType.POST_SUCCESS:
@@ -10,9 +13,6 @@ export default function posts (state = {}, action) {
     
     case PostsType.POST_FROM_CATEGORY_SUCCESS:
       return { ...state, postsCategory: action.postsCategory }
-    
-    case PostsType.NEW_POST_SUCCESS:
-      return { ...state, allposts: action.posts }
     
     case PostsType.POSTS_FAILURE:
       return { ...state, error: action.error }

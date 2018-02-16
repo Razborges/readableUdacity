@@ -56,14 +56,19 @@ export const addPost = async (post) => {
   }
 }
 
-export const deletePost = (id) =>
-  fetch(`${URL}/posts/${id}`,
+export const deletePost = async (postId) => {
+  try {
+    const response = await fetch(`${URL}/posts/${postId}`,
     {
       method: 'DELETE',
       headers
-    })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+      takeError(error)
+  }
+}
 
 export const vote = (id, vote) =>
   fetch(`${URL}/posts/${id}`,
