@@ -1,11 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   PostsType,
+  postsRequest,
   postsSuccess,
   postSuccess,
+  postsFromCategoryRequest,
   postsFromCategorySuccess,
   newPostSuccess,
-  deletePostSuccess,
   postsFailure
 } from '../actions/PostsActions';
 import { fetchPosts, fetchPost, fetchPostsByCategory, addPost, deletePost } from '../api';
@@ -53,8 +54,18 @@ function * removePost({ postId }) {
   try {
     const result = yield call(deletePost, postId);
     if(result) {
-      const results = yield call(fetchPosts);
-      yield put(deletePostSuccess(results));
+      yield put(postsRequest());
+    }
+  } catch (error) {
+    yield put(postsFailure(error))
+  }
+}
+
+function * removePostFromCategory({ postId, category }) {
+  try {
+    const result = yield call(deletePost, postId);
+    if(result) {
+      yield put(postsFromCategoryRequest(category));
     }
   } catch (error) {
     yield put(postsFailure(error))
@@ -67,4 +78,5 @@ export function * postsSaga() {
   yield takeLatest(PostsType.POST_FROM_CATEGORY_REQUEST, getPostsFromCategory);
   yield takeLatest(PostsType.NEW_POST_REQUEST, addNewPost);
   yield takeLatest(PostsType.DELETE_POST_REQUEST, removePost);
+  yield takeLatest(PostsType.DELETE_POST_CATEGORY_REQUEST, removePostFromCategory);
 };

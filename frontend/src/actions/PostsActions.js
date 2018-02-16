@@ -8,7 +8,7 @@ export const PostsType = {
   NEW_POST_REQUEST: 'NEW_POST_REQUEST',
   NEW_POST_SUCCESS: 'NEW_POST_SUCCESS',
   DELETE_POST_REQUEST: 'DELETE_POST_REQUEST',
-  DELETE_POST_SUCCESS: 'DELETE_POST_SUCCESS',
+  DELETE_POST_CATEGORY_REQUEST: 'DELETE_POST_CATEGORY_REQUEST',
   POSTS_FAILURE: 'POSTS_FAILURE'
 };
 
@@ -30,6 +30,6 @@ export const newPostSuccess = (posts) => ({ type: PostsType.NEW_POST_SUCCESS, po
 
 export const deletePostRequest = (postId) => ({ type: PostsType.DELETE_POST_REQUEST, postId });
 
-export const deletePostSuccess = (posts) => ({ type: PostsType.DELETE_POST_SUCCESS, posts });
+export const deletePostCategoryRequest = (postId, category) => ({ type: PostsType.DELETE_POST_CATEGORY_REQUEST, postId, category });
 
 export const postsFailure = (error) => ({ type: PostsType.POSTS_FAILURE, error });

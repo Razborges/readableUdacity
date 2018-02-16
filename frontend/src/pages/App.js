@@ -11,7 +11,7 @@ import AddPost from './AddPost';
 
 class App extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getCategories()
   }
 

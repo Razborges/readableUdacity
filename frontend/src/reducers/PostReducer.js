@@ -4,7 +4,6 @@ export default function posts (state = {}, action) {
   switch (action.type) {
     
     case PostsType.POSTS_SUCCESS ||
-         PostsType.DELETE_POST_SUCCESS ||
          PostsType.NEW_POST_SUCCESS:
       return { ...state, allposts: action.posts }
     

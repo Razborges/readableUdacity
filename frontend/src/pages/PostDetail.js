@@ -13,7 +13,7 @@ class PostDetail extends Component {
     postId: this.props.match.params.postId
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getCommentsById(this.state.postId)
     this.props.getPostById(this.state.postId)
   }

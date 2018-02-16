@@ -8,7 +8,7 @@ import Post from '../components/Post';
 
 class Posts extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getPosts();
   }
 
@@ -23,7 +23,6 @@ class Posts extends Component {
   _downVotePost = () => { return }
 
   render() {
-    console.log(this.state.postsLoading)
     const { allPosts } = this.props;
     return (
       <div>
