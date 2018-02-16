@@ -4,8 +4,8 @@ import { categoriesRequest } from '../actions/CategoriesActions';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Posts from './Posts';
-// import PostsCategory from './PostsCategory';
-// import PostDetail from './PostDetail';
+import PostsCategory from './PostsCategory';
+import PostDetail from './PostDetail';
 // import AddPost from './AddPost';
 // import NotFound from './NotFound';
 
@@ -23,9 +23,9 @@ class App extends Component {
           
           <Switch>
             <Route exact path='/' component={ Posts } />
-            {/* <Route exact path='/:category' component={ PostsCategory } />
+            <Route exact path='/:category' component={ PostsCategory } />
             <Route exact path='/:category/:postId' component={ PostDetail } />
-            <Route exact path='/add-post' component={ AddPost } />
+            {/* <Route exact path='/add-post' component={ AddPost } />
             <Route component={ NotFound } /> */}
           </Switch>
         </div>

@@ -6,7 +6,9 @@ import moment from 'moment';
 
 const Post = ({ post, editAction, deleteAction, upVote, downVote }) => (
   <div>
-    <h1>{ post.title }</h1>
+    <h1>
+      <Link to={`/${post.category}/${post.id}`}>{ post.title }</Link>
+    </h1>
     <p>
       <Link to={`/${post.category}`}>{post.category}</Link>
     </p>

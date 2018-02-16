@@ -7,7 +7,7 @@ export const fetchCategories = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    takeError(error)
+      takeError(error)
   }
 };
 
@@ -18,19 +18,30 @@ export const fetchPosts = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    takeError(error)
+      takeError(error)
   }
 };
 
-export const fetchPostsByCategory = (category) =>
-  fetch(`${URL}/${category}/posts`, { headers })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+export const fetchPost = async (id) => {
+  try {
+    const response = await fetch(`${URL}/posts/${id}`, { headers });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+      takeError(error)
+  }
+};
 
-export const fetchPost = (id) =>
-  fetch(`${URL}/posts/${id}`, { headers })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+export const fetchPostsByCategory = async (category) => {
+  try {
+    const response = await fetch(`${URL}/${category}/posts`, { headers });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+      console.log(error)
+      takeError(error)
+  }
+};
 
 export const deletePost = (id) =>
   fetch(`${URL}/posts/${id}`,
@@ -72,11 +83,15 @@ export const editPost = (data, id) =>
     .catch(error => takeError(error));
 
 // COMMENTS
-export const fetchComments = (id) =>
-  fetch(`${URL}/posts/${id}/comments`, { headers })
-    .then(data => data.json())
-    .then(data => data)
-    .catch(error => takeError(error));
+export const fetchComments = async (id) => {
+  try {
+    const response = await fetch(`${URL}/posts/${id}/comments`, { headers });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    takeError(error)
+  }
+};
 
 export const addComment = (data) =>
   fetch(`${URL}/comments`,
