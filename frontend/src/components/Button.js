@@ -7,7 +7,7 @@ const Button = ({ type, action, label }) => (
 
 Button.proptypes = {
   type: Proptypes.string.isRequired,
-  action: Proptypes.func.isRequired,
+  action: Proptypes.func,
   label: Proptypes.string.isRequired
 };
 

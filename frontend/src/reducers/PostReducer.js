@@ -9,7 +9,10 @@ export default function posts (state = {}, action) {
       return { ...state, postDetail: action.post }
     
     case PostsType.POST_FROM_CATEGORY_SUCCESS:
-      return { ...state, postsCategory: action.postsCategory}
+      return { ...state, postsCategory: action.postsCategory }
+    
+    case PostsType.NEW_POST_SUCCESS:
+      return { ...state, allposts: action.posts }
     
     case PostsType.POSTS_FAILURE:
       return { ...state, error: action.error }

@@ -22,7 +22,7 @@ const Navbar = ({ categories }) => (
       }
 
       <li>
-        <Link to='/add-post'>Novo Post</Link>
+        <Link to='/addpost'>Novo Post</Link>
       </li>
     </ul>
   </nav>

@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 import Posts from './Posts';
 import PostsCategory from './PostsCategory';
 import PostDetail from './PostDetail';
-// import AddPost from './AddPost';
+import AddPost from './AddPost';
 // import NotFound from './NotFound';
 
 class App extends Component {
@@ -19,14 +19,14 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <Navbar categories={this.props.categories.items} />
+          <Navbar categories={this.props.categories} />
           
           <Switch>
             <Route exact path='/' component={ Posts } />
+            <Route exact path='/addpost' component={ AddPost } />
             <Route exact path='/:category' component={ PostsCategory } />
             <Route exact path='/:category/:postId' component={ PostDetail } />
-            {/* <Route exact path='/add-post' component={ AddPost } />
-            <Route component={ NotFound } /> */}
+            {/* <Route component={ NotFound } /> */}
           </Switch>
         </div>
       </BrowserRouter>
@@ -36,7 +36,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    categories: state.categories,
+    categories: state.categories.items,
   }
 }
 

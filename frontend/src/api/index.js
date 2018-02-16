@@ -38,10 +38,23 @@ export const fetchPostsByCategory = async (category) => {
     const data = await response.json();
     return data;
   } catch (error) {
-      console.log(error)
       takeError(error)
   }
 };
+
+export const addPost = async (post) => {
+  try {
+    const response = await fetch(`${URL}/posts`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(post)
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+      takeError(error)
+  }
+}
 
 export const deletePost = (id) =>
   fetch(`${URL}/posts/${id}`,
@@ -58,16 +71,6 @@ export const vote = (id, vote) =>
       method: 'POST',
       headers,
       body: JSON.stringify({ option: vote })
-    })
-    .then(data => data.json())
-    .catch(error => takeError(error));
-
-export const addPost = data =>
-  fetch(`${URL}/posts`,
-    {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(data)
     })
     .then(data => data.json())
     .catch(error => takeError(error));
