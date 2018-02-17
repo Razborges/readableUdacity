@@ -111,31 +111,57 @@ export const fetchComments = async (id) => {
   }
 };
 
-export const addComment = (data) =>
-  fetch(`${URL}/comments`,
+export const addComment = async (comment) => {
+  try {
+    const response = await fetch(`${URL}/comments`,
     {
       method: 'POST',
       headers,
-      body: JSON.stringify(data)
-    })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+      body: JSON.stringify(comment)
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    takeError(error)
+  }
+};
 
-export const voteComment = (id, vote) =>
-  fetch(`${URL}/comments/${id}`,
+export const voteComment = async (id, vote) => {
+  try {
+    const response = await fetch(`${URL}/comments/${id}`,
     {
       method: 'POST',
       headers,
       body: JSON.stringify({ option: vote })
-    })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    takeError(error)
+  }
+}
   
-export const deleteComment = (id) =>
-  fetch(`${URL}/comments/${id}`,
+export const deleteComment = async (id) => {
+  try {
+    const response = await fetch(`${URL}/comments/${id}`, { method: 'DELETE', headers });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    takeError(error)
+  }
+}
+
+export const editComment = async (comment, id) => {
+  try {
+    const response = await fetch(`${URL}/comments/${id}`,
     {
-      method: 'DELETE',
-      headers
-    })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+      method: 'PUT',
+      headers,
+      body: JSON.stringify(comment)
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    takeError(error)
+  }
+}
