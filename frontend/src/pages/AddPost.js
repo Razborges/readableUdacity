@@ -5,8 +5,6 @@ import { newPostRequest } from '../actions/PostsActions';
 import uuid from 'uuid/v1';
 import moment from 'moment';
 
-import InputForm from '../components/InputForm';
-import Button from '../components/Button';
 import PostForm from '../components/PostForm';
 
 class AddPost extends Component {
@@ -14,13 +12,12 @@ class AddPost extends Component {
     title: '',
     author: '',
     category: 'react',
-    content: ''
+    body: ''
   }
 
   handleInputChange = (e) => {
     const target = e.target
     const { value, name } = target
-
     this.setState({ [name]: value })
   }
 
@@ -30,14 +27,14 @@ class AddPost extends Component {
       id: uuid(),
       timestamp: moment(),
       title: this.state.title,
-      body: this.state.content,
+      body: this.state.body,
       author: this.state.author,
       category: this.state.category,
       voteScore: 0,
       deleted: false
     };
     this.props.newPost(post);
-    this.props.history.push('/');
+    this.props.history.push(`/${post.category}/${post.id}`);
   }
 
   _cancelForm = () => {
@@ -45,7 +42,6 @@ class AddPost extends Component {
   }
   
   render() {
-    const { title, author, category, content } = this.state;
     const { categories } = this.props;
     return (
       <div>

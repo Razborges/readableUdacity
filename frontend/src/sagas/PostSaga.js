@@ -7,6 +7,7 @@ import {
   newPostSuccess,
   deletePostSuccess,
   votePostSuccess,
+  editPostSuccess,
   postsFailure
 } from '../actions/PostsActions';
 import { fetchPosts, fetchPost, fetchPostsByCategory, addPost, deletePost, votePost, editPost } from '../api';
@@ -71,7 +72,7 @@ function * votePostCategory({ postId, vote }) {
 function * editPostFromId({ post, postId }) {
   try {
     const result = yield call(editPost, post, postId);
-    console.log(result);
+    yield put(editPostSuccess(result.id, result.category))
   } catch (error) {
     yield put(postsFailure(error))
   }
@@ -91,4 +92,7 @@ export function * postsSaga() {
   yield takeLatest(PostsType.VOTE_POST_SUCCESS, getPostsFromCategory);
   yield takeLatest(PostsType.VOTE_POST_SUCCESS, getPost);
   yield takeLatest(PostsType.EDIT_POST_REQUEST, editPostFromId);
+  yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPosts);
+  yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPostsFromCategory);
+  yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPost);
 };

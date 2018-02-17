@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v1';
-import moment from 'moment';
 
 import InputForm from '../components/InputForm';
 import Button from '../components/Button';
@@ -45,24 +44,23 @@ const PostForm = ({ post, categories, submitFunction, handleFunction, handleModa
           </select>
         </label>
 
-        <label htmlFor='content'>
+        <label htmlFor='body'>
           Mensagem:
           <textarea
-            name='content'
-            id='content'
-            value={post.content}
+            name='body'
+            id='body'
+            value={post.body}
             onChange={handleFunction}
           />
         </label>
 
         <Button
-          type={'text'}
-          action={() => handleModal}
+          type={'button'}
+          action={handleModal}
           label={'Cancelar'}
         />
         <Button
           type={'submit'}
-          
           label={'Salvar'}
         />
       </form>
