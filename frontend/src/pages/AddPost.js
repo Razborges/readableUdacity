@@ -7,6 +7,7 @@ import moment from 'moment';
 
 import InputForm from '../components/InputForm';
 import Button from '../components/Button';
+import PostForm from '../components/PostForm';
 
 class AddPost extends Component {
   state = {
@@ -38,70 +39,24 @@ class AddPost extends Component {
     this.props.newPost(post);
     this.props.history.push('/');
   }
+
+  _cancelForm = () => {
+    this.props.history.push('/');
+  }
   
   render() {
     const { title, author, category, content } = this.state;
     const { categories } = this.props;
     return (
       <div>
-        <h1>Novo Post</h1>
-        <form onSubmit={this.submitNewPost}>
-          <InputForm
-            label={'Título:'}
-            name={'title'}
-            holder={'título do post'}
-            value={title}
-            onChange={this.handleInputChange}
-          />
-
-          <InputForm
-            label={'Autor:'}
-            name={'author'}
-            holder={'nome do autor'}
-            value={author}
-            onChange={this.handleInputChange}
-          />
-
-          <label htmlFor='category'>
-            Categoria:
-            <select
-              type='text'
-              name='category'
-              id='category'
-              value={category}
-              onChange={this.handleInputChange}
-              required='required'
-            >
-              { categories &&
-                categories.map(category => (
-                  <option value={category.name} key={uuid()}>{category.name}</option>
-                ))
-              }
-            </select>
-          </label>
-
-          <label htmlFor='content'>
-            Mensagem:
-            <textarea
-              name='content'
-              id='content'
-              value={content}
-              onChange={this.handleInputChange}
-              required='required'
-            />
-          </label>
-
-          <Button
-            type={'text'}
-            action={() => this.props.history.push('/')}
-            label={'Cancelar'}
-          />
-          <Button
-            type={'submit'}
-            
-            label={'Salvar'}
-          />
-        </form>
+        <PostForm
+          post={this.state}
+          categories={categories}
+          submitFunction={this.submitNewPost}
+          handleFunction={this.handleInputChange}
+          handleModal={this._cancelForm}
+          labelModal={'Novo Post'}
+        />
       </div>
     )
   }

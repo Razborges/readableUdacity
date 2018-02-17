@@ -70,25 +70,35 @@ export const deletePost = async (postId) => {
   }
 }
 
-export const vote = (id, vote) =>
-  fetch(`${URL}/posts/${id}`,
+export const votePost = async (postId, vote) => {
+  try {
+    const response = await fetch(`${URL}/posts/${postId}`,
     {
       method: 'POST',
       headers,
       body: JSON.stringify({ option: vote })
-    })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+      takeError(error)
+  }
+}
 
-export const editPost = (data, id) =>
-  fetch(`${URL}/posts/${id}`,
+export const editPost = async (post, id) => {
+  try {
+    const response = await fetch(`${URL}/posts/${id}`,
     {
       method: 'PUT',
       headers,
-      body: JSON.stringify(data)
-    })
-    .then(data => data.json())
-    .catch(error => takeError(error));
+      body: JSON.stringify(post)
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    takeError(error)
+  }
+}
 
 // COMMENTS
 export const fetchComments = async (id) => {

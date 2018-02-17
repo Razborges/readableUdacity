@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postsFromCategoryRequest, deletePostCategoryRequest } from '../actions/PostsActions';
+import { postsFromCategoryRequest, deletePostRequest, votePostRequest } from '../actions/PostsActions';
 //import PropTypes from 'prop-types';
 import uuid from 'uuid/v1';
 
@@ -28,9 +28,9 @@ class PostsCategory extends Component {
     this.props.deletePost(id, category);
   }
 
-  _upVotePost = () => { return }
-
-  _downVotePost = () => { return }
+  _votePost = (id, vote) => {
+    this.props.votePost(id, vote);
+  }
 
   render() {
     const { postsCategory } = this.props;
@@ -45,8 +45,8 @@ class PostsCategory extends Component {
               post={post}
               editAction={this._editPost}
               deleteAction={() => this._deletePost(post.id, this.state.category)}
-              upVote={this._upVotePost}
-              downVote={this._downVotePost}
+              upVote={() => this._votePost(post.id, 'upVote')}
+              downVote={() => this._votePost(post.id, 'downVote')}
             />
           ))
         }
@@ -64,7 +64,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPostsFromCategory: (category) => dispatch(postsFromCategoryRequest(category)),
-    deletePost: (postId, category) => dispatch(deletePostCategoryRequest(postId, category))
+    deletePost: (postId, category) => dispatch(deletePostRequest(postId, category)),
+    votePost: (postId, vote) => dispatch(votePostRequest(postId, vote))
   }
 }
 

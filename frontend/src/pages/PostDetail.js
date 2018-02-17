@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { commentsPostIdRequest } from '../actions/CommentsActions';
-import { postRequest, deletePostRequest } from '../actions/PostsActions';
+import { postRequest, deletePostRequest, votePostRequest } from '../actions/PostsActions';
 //import PropTypes from 'prop-types';
 import uuid from 'uuid/v1';
 
@@ -25,9 +25,9 @@ class PostDetail extends Component {
     this.props.history.push('/');
   }
 
-  _upVotePost = () => { return }
-
-  _downVotePost = () => { return }
+  _votePost = (id, vote) => {
+    this.props.votePost(id, vote);
+  }
 
   render() {
     const { comments, post } = this.props;
@@ -38,8 +38,8 @@ class PostDetail extends Component {
             post={post}
             editAction={this._editPost}
             deleteAction={() => this._deletePost(post.id)}
-            upVote={this._upVotePost}
-            downVote={this._downVotePost}
+            upVote={() => this._votePost(post.id, 'upVote')}
+            downVote={() => this._votePost(post.id, 'downVote')}
           />
         }
         {comments && 
@@ -69,7 +69,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getCommentsById: (postId) => dispatch(commentsPostIdRequest(postId)),
     getPostById: (postId) => dispatch(postRequest(postId)),
-    deletePost: (postId) => dispatch(deletePostRequest(postId))
+    deletePost: (postId) => dispatch(deletePostRequest(postId)),
+    votePost: (postId, vote) => dispatch(votePostRequest(postId, vote))
   }
 }
 

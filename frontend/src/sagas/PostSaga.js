@@ -1,15 +1,15 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   PostsType,
-  postsRequest,
   postsSuccess,
   postSuccess,
-  postsFromCategoryRequest,
   postsFromCategorySuccess,
   newPostSuccess,
+  deletePostSuccess,
+  votePostSuccess,
   postsFailure
 } from '../actions/PostsActions';
-import { fetchPosts, fetchPost, fetchPostsByCategory, addPost, deletePost } from '../api';
+import { fetchPosts, fetchPost, fetchPostsByCategory, addPost, deletePost, votePost, editPost } from '../api';
 
 function * getPosts() {
   try {
@@ -53,20 +53,25 @@ function * addNewPost({ post }) {
 function * removePost({ postId }) {
   try {
     const result = yield call(deletePost, postId);
-    if(result) {
-      yield put(postsRequest());
-    }
+    yield put(deletePostSuccess(result.id, result.category))
   } catch (error) {
     yield put(postsFailure(error))
   }
 }
 
-function * removePostFromCategory({ postId, category }) {
+function * votePostCategory({ postId, vote }) {
   try {
-    const result = yield call(deletePost, postId);
-    if(result) {
-      yield put(postsFromCategoryRequest(category));
-    }
+    const result = yield call(votePost, postId, vote);
+    yield put(votePostSuccess(result.id, result.category))
+  } catch (error) {
+    yield put(postsFailure(error))
+  }
+}
+
+function * editPostFromId({ post, postId }) {
+  try {
+    const result = yield call(editPost, post, postId);
+    console.log(result);
   } catch (error) {
     yield put(postsFailure(error))
   }
@@ -78,5 +83,12 @@ export function * postsSaga() {
   yield takeLatest(PostsType.POST_FROM_CATEGORY_REQUEST, getPostsFromCategory);
   yield takeLatest(PostsType.NEW_POST_REQUEST, addNewPost);
   yield takeLatest(PostsType.DELETE_POST_REQUEST, removePost);
-  yield takeLatest(PostsType.DELETE_POST_CATEGORY_REQUEST, removePostFromCategory);
+  yield takeLatest(PostsType.DELETE_POST_SUCCESS, getPosts);
+  yield takeLatest(PostsType.DELETE_POST_SUCCESS, getPostsFromCategory);
+  yield takeLatest(PostsType.DELETE_POST_SUCCESS, getPost);
+  yield takeLatest(PostsType.VOTE_POST_REQUEST, votePostCategory);
+  yield takeLatest(PostsType.VOTE_POST_SUCCESS, getPosts);
+  yield takeLatest(PostsType.VOTE_POST_SUCCESS, getPostsFromCategory);
+  yield takeLatest(PostsType.VOTE_POST_SUCCESS, getPost);
+  yield takeLatest(PostsType.EDIT_POST_REQUEST, editPostFromId);
 };

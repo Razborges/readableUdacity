@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postsRequest, deletePostRequest } from '../actions/PostsActions';
+import { postsRequest, deletePostRequest, votePostRequest } from '../actions/PostsActions';
 //import PropTypes from 'prop-types';
 import uuid from 'uuid/v1';
 
@@ -18,9 +18,9 @@ class Posts extends Component {
     this.props.deletePost(id);
   }
 
-  _upVotePost = () => { return }
-
-  _downVotePost = () => { return }
+  _votePost = (id, vote) => {
+    this.props.votePost(id, vote);
+  }
 
   render() {
     const { allPosts } = this.props;
@@ -32,8 +32,8 @@ class Posts extends Component {
               post={post}
               editAction={this._editPost}
               deleteAction={() => this._deletePost(post.id)}
-              upVote={this._upVotePost}
-              downVote={this._downVotePost}
+              upVote={() => this._votePost(post.id, 'upVote')}
+              downVote={() => this._votePost(post.id, 'downVote')}
             />
           ))
         }
@@ -52,7 +52,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: () => dispatch(postsRequest()),
-    deletePost: (postId) => dispatch(deletePostRequest(postId))
+    deletePost: (postId) => dispatch(deletePostRequest(postId)),
+    votePost: (postId, vote) => dispatch(votePostRequest(postId, vote))
   }
 }
 
