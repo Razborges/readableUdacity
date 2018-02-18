@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, takeEvery } from 'redux-saga/effects';
 import {
   CommentsType,
   commentPostIdSuccess,
@@ -59,8 +59,8 @@ export function * commentsSaga() {
   yield takeLatest(CommentsType.COMMENTS_POST_ID_REQUEST, getCommentPostId);
   yield takeLatest(CommentsType.NEW_COMMENT_REQUEST, newComment);
   yield takeLatest(CommentsType.NEW_COMMENT_SUCCESS, getCommentPostId);
-  yield takeLatest(CommentsType.DELETE_COMMENT_REQUEST, deleteCommentInPost);
-  yield takeLatest(CommentsType.DELETE_COMMENT_SUCCESS, getCommentPostId);
+  yield takeEvery(CommentsType.DELETE_COMMENT_REQUEST, deleteCommentInPost);
+  yield takeEvery(CommentsType.DELETE_COMMENT_SUCCESS, getCommentPostId);
   yield takeLatest(CommentsType.VOTE_COMMENT_REQUEST, voteCommentInPost);
   yield takeLatest(CommentsType.VOTE_COMMENT_SUCCESS, getCommentPostId);
   yield takeLatest(CommentsType.EDIT_COMMENT_REQUEST, editCommentInPost);

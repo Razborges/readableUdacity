@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { commentsPostIdRequest } from '../actions/CommentsActions';
 import { postRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
-import { newCommentRequest, deleteCommentRequest, voteCommentRequest, editCommentRequest } from '../actions/CommentsActions';
+import { commentsPostIdRequest, newCommentRequest, deleteCommentRequest, voteCommentRequest, editCommentRequest } from '../actions/CommentsActions';
 //import PropTypes from 'prop-types';
 import uuid from 'uuid/v1';
 import moment from 'moment';
@@ -12,6 +11,7 @@ import If from '../components/If';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';
 import Button from '../components/Button';
+import NotFound from '../pages/NotFound';
 
 class PostDetail extends Component {
   state = {
@@ -77,6 +77,9 @@ class PostDetail extends Component {
 
   _deletePost = (id) => {
     this.props.deletePost(id);
+    this.props.comments.forEach(comment => {
+      this._deleteComment(comment.id)
+    });
     this.props.history.push('/');
   }
 
@@ -149,71 +152,77 @@ class PostDetail extends Component {
   render() {
     const { comments, post, categories } = this.props;
     const { modalEdit, modalPostId, modalCommentNew, modalCommentEdit, modalCommentId } = this.state;
+
     return(
       <div>
-        { post &&
-          <div key={post.id}>
-            <If test={modalEdit && modalPostId === post.id}>
-              <PostForm
-                post={this.state}
-                categories={categories}
-                submitFunction={this.submitEditPost}
-                handleFunction={this.handleInputChange}
-                handleModal={this._cancelForm}
-                labelModal={'Editar Post'}
-              />
-            </If>
-            <If test={!modalEdit || modalPostId !== post.id}>
-              <Post
-                post={post}
-                editAction={() => this._editPost(post)}
-                deleteAction={() => this._deletePost(post.id)}
-                upVote={() => this._votePost(post.id, 'upVote')}
-                downVote={() => this._votePost(post.id, 'downVote')}
-              />
-            </If>
-            <Button
-              type={'button'}
-              action={() => this._newcomment()}
-              label={'COMENTAR'}
-            />
-          </div>
-        }
-
-        <If test={modalCommentNew}>
-          <CommentForm
-            comment={this.state}
-            submitFunction={this._submitNewComment}
-            handleFunction={this.handleInputChange}
-            handleModal={this._cancelCommentForm}
-            labelModal={'Novo Comentário'}
-          />
+        <If test={post === undefined || Object.keys(post) <= 0 || post.error}>
+          <NotFound/>
         </If>
-
-        {comments && 
-          comments.map(comment => (
-            <div key={comment.id}>
-              <If test={modalCommentEdit && modalCommentId === comment.id}>
-                <CommentForm
-                  comment={this.state}
-                  submitFunction={this._submitEditComment}
+        <If test={post && Object.values(post).length && !post.error}>
+          { post &&
+            <div key={post.id}>
+              <If test={modalEdit && modalPostId === post.id}>
+                <PostForm
+                  post={this.state}
+                  categories={categories}
+                  submitFunction={this.submitEditPost}
                   handleFunction={this.handleInputChange}
-                  handleModal={this._cancelCommentForm}
-                  labelModal={'Editar Comentário'}
+                  handleModal={this._cancelForm}
+                  labelModal={'Editar Post'}
                 />
               </If>
-              <If test={!modalCommentEdit || modalCommentId !== comment.id}>
-                <Comment
-                  comment={comment}
-                  editAction={() => this._editComment(comment)}
-                  deleteAction={() => this._deleteComment(comment.id)}
-                  upVote={() => this._voteComment(comment.id, 'upVote')}
-                  downVote={() => this._voteComment(comment.id, 'downVote')}
+              <If test={!modalEdit || modalPostId !== post.id}>
+                <Post
+                  post={post}
+                  editAction={() => this._editPost(post)}
+                  deleteAction={() => this._deletePost(post.id)}
+                  upVote={() => this._votePost(post.id, 'upVote')}
+                  downVote={() => this._votePost(post.id, 'downVote')}
                 />
               </If>
+              <Button
+                type={'button'}
+                action={() => this._newcomment()}
+                label={'COMENTAR'}
+              />
             </div>
-          ))
-        }
+          }
+
+          <If test={modalCommentNew}>
+            <CommentForm
+              comment={this.state}
+              submitFunction={this._submitNewComment}
+              handleFunction={this.handleInputChange}
+              handleModal={this._cancelCommentForm}
+              labelModal={'Novo Comentário'}
+            />
+          </If>
+
+          {comments && 
+            comments.map(comment => (
+              <div key={comment.id}>
+                <If test={modalCommentEdit && modalCommentId === comment.id}>
+                  <CommentForm
+                    comment={this.state}
+                    submitFunction={this._submitEditComment}
+                    handleFunction={this.handleInputChange}
+                    handleModal={this._cancelCommentForm}
+                    labelModal={'Editar Comentário'}
+                  />
+                </If>
+                <If test={!modalCommentEdit || modalCommentId !== comment.id}>
+                  <Comment
+                    comment={comment}
+                    editAction={() => this._editComment(comment)}
+                    deleteAction={() => this._deleteComment(comment.id)}
+                    upVote={() => this._voteComment(comment.id, 'upVote')}
+                    downVote={() => this._voteComment(comment.id, 'downVote')}
+                  />
+                </If>
+              </div>
+            ))
+          }
+        </If>
       </div>
     )
   }

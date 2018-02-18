@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { postsRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
+import { commentsPostIdRequest, deleteCommentRequest } from '../actions/CommentsActions';
 //import PropTypes from 'prop-types';
 import moment from 'moment';
 import Post from '../components/Post';
@@ -74,8 +76,15 @@ class Posts extends Component {
   render() {
     const { modalEdit, modalPostId } = this.state;
     const { allPosts, categories } = this.props;
+
     return (
       <div>
+        <If test={allPosts === undefined || allPosts.length <= 0}>
+          <p>Nenhum post foi cadastrado até o momento.</p>
+          <p>Clique para adicionar um <Link to='/addpost'>novo post</Link>.</p>
+        </If>
+        <If test={allPosts && allPosts.length > 0}>
+        <h1>TODOS OS POSTS</h1>
         {allPosts &&
           allPosts.map(post => (
             <div key={post.id}>
@@ -101,6 +110,7 @@ class Posts extends Component {
             </div>
           ))
         }
+        </If>
       </div>
     )
   }
@@ -110,7 +120,8 @@ class Posts extends Component {
 const mapStateToProps = (state) => {
   return {
     allPosts: state.posts.allposts,
-    categories: state.categories.items
+    categories: state.categories.items,
+    comments: state.comments.commentsPost
   }
 }
 
@@ -119,7 +130,9 @@ const mapDispatchToProps = (dispatch) => {
     getPosts: () => dispatch(postsRequest()),
     deletePost: (postId) => dispatch(deletePostRequest(postId)),
     votePost: (postId, vote) => dispatch(votePostRequest(postId, vote)),
-    editPost: (post, postId) => dispatch(editPostRequest(post, postId))
+    editPost: (post, postId) => dispatch(editPostRequest(post, postId)),
+    getCommentsById: (postId) => dispatch(commentsPostIdRequest(postId)),
+    deleteComment: (commentId) => dispatch(deleteCommentRequest(commentId))
   }
 }
 

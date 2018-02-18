@@ -10,6 +10,7 @@ import {
   editPostSuccess,
   postsFailure
 } from '../actions/PostsActions';
+import { CommentsType } from '../actions/CommentsActions';
 import { fetchPosts, fetchPost, fetchPostsByCategory, addPost, deletePost, votePost, editPost } from '../api';
 
 function * getPosts() {
@@ -95,4 +96,5 @@ export function * postsSaga() {
   yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPosts);
   yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPostsFromCategory);
   yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPost);
+  yield takeLatest(CommentsType.NEW_COMMENT_SUCCESS, getPost);
 };

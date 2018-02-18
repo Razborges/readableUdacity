@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { postsFromCategoryRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
+import { commentsPostIdRequest, deleteCommentRequest } from '../actions/CommentsActions';
 //import PropTypes from 'prop-types';
 import moment from 'moment';
 import Post from '../components/Post';
 import PostForm from '../components/PostForm';
 import If from '../components/If';
+import NotFound from '../pages/NotFound';
 
 class PostsCategory extends Component {
   state = {
@@ -84,32 +86,37 @@ class PostsCategory extends Component {
 
     return (
       <div>
-        <h1>{ category }</h1>
-        {postsCategory &&
-          postsCategory.map(post => (
-            <div key={post.id}>
-              <If test={modalEdit && modalPostId === post.id}>
-                <PostForm
-                  post={this.state}
-                  categories={categories}
-                  submitFunction={this.submitEditPost}
-                  handleFunction={this.handleInputChange}
-                  handleModal={this._cancelForm}
-                  labelModal={'Editar Post'}
-                />
-              </If>
-              <If test={!modalEdit || modalPostId !== post.id}>
-                <Post
-                  post={post}
-                  editAction={() => this._editPost(post)}
-                  deleteAction={() => this._deletePost(post.id)}
-                  upVote={() => this._votePost(post.id, 'upVote')}
-                  downVote={() => this._votePost(post.id, 'downVote')}
-                />
-              </If>
-            </div>
-          ))
-        }
+        <If test={postsCategory === undefined || postsCategory.length <= 0 }>
+          <NotFound/>
+        </If>
+        <If test={postsCategory && postsCategory.length > 0}>
+          <h1>{ category.toUpperCase() }</h1>
+          {postsCategory &&
+            postsCategory.map(post => (
+              <div key={post.id}>
+                <If test={modalEdit && modalPostId === post.id}>
+                  <PostForm
+                    post={this.state}
+                    categories={categories}
+                    submitFunction={this.submitEditPost}
+                    handleFunction={this.handleInputChange}
+                    handleModal={this._cancelForm}
+                    labelModal={'Editar Post'}
+                  />
+                </If>
+                <If test={!modalEdit || modalPostId !== post.id}>
+                  <Post
+                    post={post}
+                    editAction={() => this._editPost(post)}
+                    deleteAction={() => this._deletePost(post.id)}
+                    upVote={() => this._votePost(post.id, 'upVote')}
+                    downVote={() => this._votePost(post.id, 'downVote')}
+                  />
+                </If>
+              </div>
+            ))
+          }
+        </If>
       </div>
     )
   }
@@ -118,7 +125,8 @@ class PostsCategory extends Component {
 const mapStateToProps = (state) => {
   return {
     postsCategory: state.posts.postsCategory,
-    categories: state.categories.items
+    categories: state.categories.items,
+    comments: state.comments.commentsPost
   }
 }
 
@@ -127,7 +135,9 @@ const mapDispatchToProps = (dispatch) => {
     getPostsFromCategory: (category) => dispatch(postsFromCategoryRequest(category)),
     deletePost: (postId, category) => dispatch(deletePostRequest(postId, category)),
     votePost: (postId, vote) => dispatch(votePostRequest(postId, vote)),
-    editPost: (post, postId) => dispatch(editPostRequest(post, postId))
+    editPost: (post, postId) => dispatch(editPostRequest(post, postId)),
+    getCommentsById: (postId) => dispatch(commentsPostIdRequest(postId)),
+    deleteComment: (commentId) => dispatch(deleteCommentRequest(commentId))
   }
 }
 
