@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { postsFromCategoryRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
 import { commentsPostIdRequest, deleteCommentRequest } from '../actions/CommentsActions';
-//import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import moment from 'moment';
 import Post from '../components/Post';
 import PostForm from '../components/PostForm';
 import If from '../components/If';
-import NotFound from '../pages/NotFound';
+import Button from '../components/Button';
 
 class PostsCategory extends Component {
   state = {
@@ -87,10 +87,30 @@ class PostsCategory extends Component {
     return (
       <div>
         <If test={postsCategory === undefined || postsCategory.length <= 0 }>
-          <NotFound/>
+          <ViewHeader>
+            <Message>Nenhum post nesta categoria ou esta categoria não existe.</Message>
+          </ViewHeader>
         </If>
         <If test={postsCategory && postsCategory.length > 0}>
-          <h1>{ category.toUpperCase() }</h1>
+
+          <ViewHeader>
+            <HeaderTitle>{ category.toUpperCase() }</HeaderTitle>
+
+            <ViewOrder>
+              <Button
+                type={'button'}
+                action={() => this._newcomment()}
+                label={'VOTOS'}
+              />
+              <HeaderTitle>|</HeaderTitle>
+              <Button
+                type={'button'}
+                action={() => this._newcomment()}
+                label={'DATA'}
+              />
+            </ViewOrder>
+          </ViewHeader>
+
           {postsCategory &&
             postsCategory.map(post => (
               <div key={post.id}>
@@ -121,6 +141,30 @@ class PostsCategory extends Component {
     )
   }
 }
+
+const ViewHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 6em;
+  margin-bottom: 2em;
+`;
+
+const HeaderTitle = styled.h1`
+  color: #456990;
+  font-size: 1em;
+  font-weight: 700;
+`;
+
+const ViewOrder = styled.div`
+  display: flex;
+  justify-content: space-between,
+  width: 15%;
+`;
+
+const Message = styled.p`
+  color: #456990;
+  margin: 0;
+`;
 
 const mapStateToProps = (state) => {
   return {

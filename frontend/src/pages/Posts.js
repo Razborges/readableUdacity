@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { postsRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
 import { commentsPostIdRequest, deleteCommentRequest } from '../actions/CommentsActions';
-//import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import moment from 'moment';
 import Post from '../components/Post';
 import PostForm from '../components/PostForm';
 import If from '../components/If';
+import Button from '../components/Button';
 
 class Posts extends Component {
   state = {
@@ -80,42 +81,94 @@ class Posts extends Component {
     return (
       <div>
         <If test={allPosts === undefined || allPosts.length <= 0}>
-          <p>Nenhum post foi cadastrado até o momento.</p>
-          <p>Clique para adicionar um <Link to='/addpost'>novo post</Link>.</p>
+          <ViewMessage>
+            <Message>Nenhum post foi cadastrado até o momento.</Message>
+            <Message>Clique para adicionar um <Link to='/addpost'>novo post</Link>.</Message>
+          </ViewMessage>
         </If>
+
         <If test={allPosts && allPosts.length > 0}>
-        <h1>TODOS OS POSTS</h1>
-        {allPosts &&
-          allPosts.map(post => (
-            <div key={post.id}>
-              <If test={modalEdit && modalPostId === post.id}>
-                <PostForm
-                  post={this.state}
-                  categories={categories}
-                  submitFunction={this.submitEditPost}
-                  handleFunction={this.handleInputChange}
-                  handleModal={this._cancelForm}
-                  labelModal={'Editar Post'}
-                />
-              </If>
-              <If test={!modalEdit || modalPostId !== post.id}>
-                <Post
-                  post={post}
-                  editAction={() => this._editPost(post)}
-                  deleteAction={() => this._deletePost(post.id)}
-                  upVote={() => this._votePost(post.id, 'upVote')}
-                  downVote={() => this._votePost(post.id, 'downVote')}
-                />
-              </If>
-            </div>
-          ))
-        }
+          <ViewHeader>
+            <HeaderTitle>TODOS OS POSTS</HeaderTitle>
+
+            <ViewOrder>
+              <Button
+                type={'button'}
+                action={() => this._newcomment()}
+                label={'VOTOS'}
+              />
+              <HeaderTitle>|</HeaderTitle>
+              <Button
+                type={'button'}
+                action={() => this._newcomment()}
+                label={'DATA'}
+              />
+            </ViewOrder>
+          </ViewHeader>
+        
+          {allPosts &&
+            allPosts.map(post => (
+              <div key={post.id}>
+                <If test={modalEdit && modalPostId === post.id}>
+                  <PostForm
+                    post={this.state}
+                    categories={categories}
+                    submitFunction={this.submitEditPost}
+                    handleFunction={this.handleInputChange}
+                    handleModal={this._cancelForm}
+                    labelModal={'Editar Post'}
+                  />
+                </If>
+                <If test={!modalEdit || modalPostId !== post.id}>
+                  <Post
+                    post={post}
+                    editAction={() => this._editPost(post)}
+                    deleteAction={() => this._deletePost(post.id)}
+                    upVote={() => this._votePost(post.id, 'upVote')}
+                    downVote={() => this._votePost(post.id, 'downVote')}
+                  />
+                </If>
+              </div>
+            ))
+          }
         </If>
       </div>
     )
   }
 
 }
+
+const ViewHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 6em;
+  margin-bottom: 2em;
+`;
+
+const HeaderTitle = styled.h1`
+  color: #456990;
+  font-size: 1em;
+  font-weight: 700;
+`;
+
+const ViewOrder = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 15%;
+`;
+
+const ViewMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 6em;
+  margin-bottom: 2em;
+`;
+
+const Message = styled.p`
+  color: #456990;
+  margin: 0 0 2em 0;
+`;
 
 const mapStateToProps = (state) => {
   return {

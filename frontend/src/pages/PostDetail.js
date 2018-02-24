@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { postRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
 import { commentsPostIdRequest, newCommentRequest, deleteCommentRequest, voteCommentRequest, editCommentRequest } from '../actions/CommentsActions';
-//import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import uuid from 'uuid/v1';
 import moment from 'moment';
 import Post from '../components/Post';
@@ -180,11 +180,16 @@ class PostDetail extends Component {
                   downVote={() => this._votePost(post.id, 'downVote')}
                 />
               </If>
-              <Button
-                type={'button'}
-                action={() => this._newcomment()}
-                label={'COMENTAR'}
-              />
+
+              <If test={!modalCommentNew}>
+                <ViewButtonComment>
+                  <Button
+                    type={'button'}
+                    action={() => this._newcomment()}
+                    label={'COMENTAR'}
+                  />
+                </ViewButtonComment>
+              </If>
             </div>
           }
 
@@ -227,6 +232,13 @@ class PostDetail extends Component {
     )
   }
 }
+
+const ViewButtonComment = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2em;
+  padding: 0 6em;
+`;
 
 const mapStateToProps = (state) => {
   return {
