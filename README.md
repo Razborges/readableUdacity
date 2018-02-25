@@ -28,17 +28,17 @@ Para executar este projeto é necessário que tenha o Node e o Yarn (ou NPM) ins
 
 ## Screenshots do Projeto
 
-<!-- <img src="../screenshots/tela1.png" alt="Index com lista de Posts" width="50%" /> -->
+<div align="center">
+<img src="./screenshots/tela1.png" alt="Index com lista de Posts" width="40%" />
 
-![Index com lista de Posts|50%](./screenshots/tela1.png)
+<img src="./screenshots/tela2.png" alt="Página de detalhe do Post" width="40%" />
 
-![Página de detalhe do Post|50%](./screenshots/tela2.png)
+<img src="./screenshots/tela3.png" alt="Página para adicionar novo Post" width="40%" />
 
-![Página para adicionar novo Post|50%](./screenshots/tela3.png)
+<img src="./screenshots/tela4.png" alt="Demonstrando a edição de comentários" width="40%" />
 
-![Demonstrando a edição de comentários|50%](./screenshots/tela4.png)
-
-![Adicionando um novo comentário|50%](./screenshots/tela5.png)
+<img src="./screenshots/tela5.png" alt="Adicionando um novo comentário" width="40%" />
+</div>
 
 ## Checking de Implementações realizadas
 
