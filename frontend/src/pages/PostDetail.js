@@ -43,7 +43,7 @@ class PostDetail extends Component {
     e.preventDefault();
     const post = {
       id: this.state.modalPostId,
-      timestamp: moment(),
+      timestamp: moment().valueOf(),
       title: this.state.title,
       body: this.state.body,
       author: this.state.author,
@@ -99,7 +99,7 @@ class PostDetail extends Component {
     e.preventDefault();
     const comment = {
       id: uuid(),
-      timestamp: moment(),
+      timestamp: moment().valueOf(),
       body: this.state.bodyComment,
       author: this.state.authorComment,
       parentId: this.state.modalPostId
@@ -140,7 +140,7 @@ class PostDetail extends Component {
     e.preventDefault();
     const comment = {
       id: this.state.modalCommentId,
-      timestamp: moment(),
+      timestamp: moment().valueOf(),
       body: this.state.bodyComment,
       author: this.state.authorComment,
       parentId: this.state.modalPostId

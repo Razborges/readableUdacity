@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { postsRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
+import { postsRequest, deletePostRequest, votePostRequest, editPostRequest, postSortVoteRequest, postSortDateRequest } from '../actions/PostsActions';
 import { commentsPostIdRequest, deleteCommentRequest } from '../actions/CommentsActions';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -17,7 +17,9 @@ class Posts extends Component {
     category: 'react',
     body: '',
     modalEdit: false,
-    modalPostId: ''
+    modalPostId: '',
+    orderVote: false,
+    orderDate: false
   }
 
   componentDidMount() {
@@ -74,6 +76,16 @@ class Posts extends Component {
     this.props.votePost(id, vote);
   }
 
+  _orderPostVote = (posts) => {
+    this.setState({ orderVote: !this.state.orderVote })
+    this.props.orderVote(posts, this.state.orderVote);
+  }
+
+  _orderPostDate = (posts) => {
+    this.setState({ orderDate: !this.state.orderDate })
+    this.props.orderDate(posts, this.state.orderDate);
+  }
+
   render() {
     const { modalEdit, modalPostId } = this.state;
     const { allPosts, categories } = this.props;
@@ -94,13 +106,13 @@ class Posts extends Component {
             <ViewOrder>
               <Button
                 type={'button'}
-                action={() => this._newcomment()}
+                action={() => this._orderPostVote(allPosts)}
                 label={'VOTOS'}
               />
               <HeaderTitle>|</HeaderTitle>
               <Button
                 type={'button'}
-                action={() => this._newcomment()}
+                action={() => this._orderPostDate(allPosts)}
                 label={'DATA'}
               />
             </ViewOrder>
@@ -185,7 +197,9 @@ const mapDispatchToProps = (dispatch) => {
     votePost: (postId, vote) => dispatch(votePostRequest(postId, vote)),
     editPost: (post, postId) => dispatch(editPostRequest(post, postId)),
     getCommentsById: (postId) => dispatch(commentsPostIdRequest(postId)),
-    deleteComment: (commentId) => dispatch(deleteCommentRequest(commentId))
+    deleteComment: (commentId) => dispatch(deleteCommentRequest(commentId)),
+    orderVote: (posts, order) => dispatch(postSortVoteRequest(posts, order)),
+    orderDate: (posts, order) => dispatch(postSortDateRequest(posts, order))
   }
 }
 

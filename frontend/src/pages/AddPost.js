@@ -25,7 +25,7 @@ class AddPost extends Component {
     e.preventDefault()
     const post = {
       id: uuid(),
-      timestamp: moment(),
+      timestamp: moment().valueOf(),
       title: this.state.title,
       body: this.state.body,
       author: this.state.author,

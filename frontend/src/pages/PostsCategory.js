@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postsFromCategoryRequest, deletePostRequest, votePostRequest, editPostRequest } from '../actions/PostsActions';
+import { postsFromCategoryRequest, deletePostRequest, votePostRequest, editPostRequest, postCategorySortVoteRequest, postCategorySortDateRequest } from '../actions/PostsActions';
 import { commentsPostIdRequest, deleteCommentRequest } from '../actions/CommentsActions';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -16,7 +16,9 @@ class PostsCategory extends Component {
     author: '',
     body: '',
     modalEdit: false,
-    modalPostId: ''
+    modalPostId: '',
+    orderVote: false,
+    orderDate: false
   }
 
   componentDidMount() {
@@ -40,7 +42,7 @@ class PostsCategory extends Component {
     e.preventDefault()
     const post = {
       id: this.state.modalPostId,
-      timestamp: moment(),
+      timestamp: moment().valueOf(),
       title: this.state.title,
       body: this.state.body,
       author: this.state.author,
@@ -80,6 +82,16 @@ class PostsCategory extends Component {
     this.props.votePost(id, vote);
   }
 
+  _orderPostVote = (posts) => {
+    this.setState({ orderVote: !this.state.orderVote })
+    this.props.orderVote(posts, this.state.orderVote);
+  }
+
+  _orderPostDate = (posts) => {
+    this.setState({ orderDate: !this.state.orderDate })
+    this.props.orderDate(posts, this.state.orderDate);
+  }
+
   render() {
     const { postsCategory, categories } = this.props;
     const { category, modalEdit, modalPostId } = this.state;
@@ -99,13 +111,13 @@ class PostsCategory extends Component {
             <ViewOrder>
               <Button
                 type={'button'}
-                action={() => this._newcomment()}
+                action={() => this._orderPostVote(postsCategory)}
                 label={'VOTOS'}
               />
               <HeaderTitle>|</HeaderTitle>
               <Button
                 type={'button'}
-                action={() => this._newcomment()}
+                action={() => this._orderPostDate(postsCategory)}
                 label={'DATA'}
               />
             </ViewOrder>
@@ -181,7 +193,9 @@ const mapDispatchToProps = (dispatch) => {
     votePost: (postId, vote) => dispatch(votePostRequest(postId, vote)),
     editPost: (post, postId) => dispatch(editPostRequest(post, postId)),
     getCommentsById: (postId) => dispatch(commentsPostIdRequest(postId)),
-    deleteComment: (commentId) => dispatch(deleteCommentRequest(commentId))
+    deleteComment: (commentId) => dispatch(deleteCommentRequest(commentId)),
+    orderVote: (posts, order) => dispatch(postCategorySortVoteRequest(posts, order)),
+    orderDate: (posts, order) => dispatch(postCategorySortDateRequest(posts, order))
   }
 }
 

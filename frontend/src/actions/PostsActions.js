@@ -13,7 +13,15 @@ export const PostsType = {
   VOTE_POST_SUCCESS: 'VOTE_POST_SUCCESS',
   EDIT_POST_REQUEST: 'EDIT_POST_REQUEST',
   EDIT_POST_SUCCESS: 'EDIT_POST_SUCCESS',
-  POSTS_FAILURE: 'POSTS_FAILURE'
+  POSTS_FAILURE: 'POSTS_FAILURE',
+  POSTS_SORT_VOTE_REQUEST: 'POSTS_SORT_VOTE_REQUEST',
+  POSTS_SORT_VOTE_SUCCESS: 'POSTS_SORT_VOTE_SUCCESS',
+  POSTS_SORT_DATE_REQUEST: 'POSTS_SORT_DATE_REQUEST',
+  POSTS_SORT_DATE_SUCCESS: 'POSTS_SORT_DATE_SUCCESS',
+  POSTS_CATEGORY_SORT_VOTE_REQUEST: 'POSTS_CATEGORY_SORT_VOTE_REQUEST',
+  POSTS_CATEGORY_SORT_VOTE_SUCCESS: 'POSTS_CATEGORY_SORT_VOTE_SUCCESS',
+  POSTS_CATEGORY_SORT_DATE_REQUEST: 'POSTS_CATEGORY_SORT_DATE_REQUEST',
+  POSTS_CATEGORY_SORT_DATE_SUCCESS: 'POSTS_CATEGORY_SORT_DATE_SUCCESS'
 };
 
 export const postsRequest = () => ({ type: PostsType.POSTS_REQUEST });
@@ -45,3 +53,19 @@ export const editPostRequest = (post, postId) => ({ type: PostsType.EDIT_POST_RE
 export const editPostSuccess = (postId, category) => ({ type: PostsType.EDIT_POST_SUCCESS, postId, category });
 
 export const postsFailure = (error) => ({ type: PostsType.POSTS_FAILURE, error });
+
+export const postSortVoteRequest = (posts, order) => ({ type: PostsType.POSTS_SORT_VOTE_REQUEST, posts, order });
+
+export const postSortVoteSuccess = (posts) => ({ type: PostsType.POSTS_SORT_VOTE_SUCCESS, posts });
+
+export const postSortDateRequest = (posts, order) => ({ type: PostsType.POSTS_SORT_DATE_REQUEST, posts, order });
+
+export const postSortDateSuccess = (posts) => ({ type: PostsType.POSTS_SORT_DATE_SUCCESS, posts });
+
+export const postCategorySortVoteRequest = (postsCategory, order) => ({ type: PostsType.POSTS_CATEGORY_SORT_VOTE_REQUEST, postsCategory, order });
+
+export const postCategorySortVoteSuccess = (postsCategory) => ({ type: PostsType.POSTS_CATEGORY_SORT_VOTE_SUCCESS, postsCategory });
+
+export const postCategorySortDateRequest = (postsCategory, order) => ({ type: PostsType.POSTS_CATEGORY_SORT_DATE_REQUEST, postsCategory, order });
+
+export const postCategorySortDateSuccess = (postsCategory) => ({ type: PostsType.POSTS_CATEGORY_SORT_DATE_SUCCESS, postsCategory });

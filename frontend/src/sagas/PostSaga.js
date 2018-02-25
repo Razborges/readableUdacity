@@ -8,10 +8,15 @@ import {
   deletePostSuccess,
   votePostSuccess,
   editPostSuccess,
-  postsFailure
+  postsFailure,
+  postSortVoteSuccess,
+  postSortDateSuccess,
+  postCategorySortVoteSuccess,
+  postCategorySortDateSuccess
 } from '../actions/PostsActions';
 import { CommentsType } from '../actions/CommentsActions';
 import { fetchPosts, fetchPost, fetchPostsByCategory, addPost, deletePost, votePost, editPost } from '../api';
+import _ from 'lodash';
 
 function * getPosts() {
   try {
@@ -79,6 +84,62 @@ function * editPostFromId({ post, postId }) {
   }
 }
 
+function * orderPostVote({ posts, order }) {
+  let result;
+  try {
+    if(order) {
+      result = _.orderBy(posts, ['voteScore'], ['desc']);
+    } else {
+      result = _.orderBy(posts, ['voteScore'], ['asc']);
+    }
+    yield put(postSortVoteSuccess(result))
+  } catch (error) {
+    yield put(postsFailure(error))
+  }
+}
+
+function * orderPostDate({ posts, order }) {
+  let result;
+  try {
+    if(order) {
+      result = _.orderBy(posts, ['timestamp'], ['desc']);
+    } else {
+      result = _.orderBy(posts, ['timestamp'], ['asc']);
+    }
+    yield put(postSortDateSuccess(result))
+  } catch (error) {
+    yield put(postsFailure(error))
+  }
+}
+
+function * orderPostCategoryVote({ postsCategory, order }) {
+  let result;
+  try {
+    if(order) {
+      result = _.orderBy(postsCategory, ['voteScore'], ['desc']);
+    } else {
+      result = _.orderBy(postsCategory, ['voteScore'], ['asc']);
+    }
+    yield put(postCategorySortVoteSuccess(result))
+  } catch (error) {
+    yield put(postsFailure(error))
+  }
+}
+
+function * orderPostCategoryDate({ postsCategory, order }) {
+  let result;
+  try {
+    if(order) {
+      result = _.orderBy(postsCategory, ['timestamp'], ['desc']);
+    } else {
+      result = _.orderBy(postsCategory, ['timestamp'], ['asc']);
+    }
+    yield put(postCategorySortDateSuccess(result))
+  } catch (error) {
+    yield put(postsFailure(error))
+  }
+}
+
 export function * postsSaga() {
   yield takeLatest(PostsType.POSTS_REQUEST, getPosts);
   yield takeLatest(PostsType.POST_REQUEST, getPost);
@@ -97,4 +158,8 @@ export function * postsSaga() {
   yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPostsFromCategory);
   yield takeLatest(PostsType.EDIT_POST_SUCCESS, getPost);
   yield takeLatest(CommentsType.NEW_COMMENT_SUCCESS, getPost);
+  yield takeLatest(PostsType.POSTS_SORT_VOTE_REQUEST, orderPostVote);
+  yield takeLatest(PostsType.POSTS_SORT_DATE_REQUEST, orderPostDate);
+  yield takeLatest(PostsType.POSTS_CATEGORY_SORT_VOTE_REQUEST, orderPostCategoryVote);
+  yield takeLatest(PostsType.POSTS_CATEGORY_SORT_DATE_REQUEST, orderPostCategoryDate);
 };
